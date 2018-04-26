@@ -1,19 +1,11 @@
 %% Classificador Samarretes RGB
 scanimgs('barcelona');
 function[] = scanimgs(team)
-    model = imread('barcelona/01.jpg');
-    model = normalizeRGB(model);
-    model = genHist(model);
-
-
     for i=1:40
         if i < 10 
-            imCheck(imread(strcat(team,'/0', int2str(i), '.jpg')), model, i);
-            if i == 1
-                imshow(strcat(team,'/0', int2str(i), '.jpg'));
-            end
+            allChecks(imread(strcat(team,'/0', int2str(i), '.jpg')), i);
         else
-            imCheck(imread(strcat(team,'/',int2str(i), '.jpg')), model, i);
+            allChecks(imread(strcat(team,'/',int2str(i), '.jpg')), i);
         end
     end
 
@@ -22,7 +14,39 @@ end
 
 %% Funcions Auxiliars
 
-function[] = imCheck(imT, imM, i)
+function[] = allChecks(imT, i)
+    %crida a la funcio check de cada equip
+    %passem el threshold com a parametre per si
+    %s'ha de canviar dun equip a laltre
+    presenceBcn = checkBcn(imT, i, 0.2);
+    
+    %lloc on es fara el test de presencia per cada equip
+    if(presenceBcn)
+        disp('hay bcn'); %placeholder
+    end
+end
+
+
+function[found] = checkBcn(imT, i, th)
+%Carregar tots els models necessaris per els checks
+    imM1 = imread('barcelona/01.jpg'); %placeholder
+    imM1 = normalizeRGB(imM1);
+    imM1 = genHist(imM1);
+    
+    imM2 = imread('barcelona/02.jpg'); %placeholder
+    imM2 = normalizeRGB(imM2);
+    imM2 = genHist(imM2);
+    
+    %cridar per cada un dels models i mirar si es acceptat
+    res1 = imCheck(imT, imM1, i, th);
+    res2 = imCheck(imT, imM2, i, th);
+    
+    % Contar quants models han coincidit amb la imatge
+    found = (res1 || res2); %placeholder 
+end
+
+
+function[found] = imCheck(imT, imM, i, th)
     imT = normalizeRGB(imT);
     imT = seg(imT);
     found = false;
@@ -34,15 +58,13 @@ function[] = imCheck(imT, imM, i)
             imT(j,k).hist = genHist(imT(j,k).im);
             thres = chiq2dist(imT(j, k).hist, imM);
             disp(thres);
-            if thres < 0.2
+            if thres < th
                 found = true;
             end
             k = k +1;
         end
         j = j+1;
     end
-    
-    
     
     if found
             disp(strcat('Imatge ', int2str(i), ': Barcelona'));
