@@ -3,50 +3,27 @@
 %per optimitzar els resultats
 global bins;
 global num_teams; global num_hists;
-num_teams = 1; %TO DO: idealment 7...
+num_teams = 2; %TO DO: idealment 7...
 num_hists = 3;
 bins = 32;
 th = 0.2;
 th2 = 0.019;
 %% Etapa 2: Histogrames de mostra
-%carreguem les imatges de mostra de cada equip
-im = imread('models/bcn1.jpg');
-s = im(170:270,60:160,:);
-mostra1 = equalize(s);
-im = imread('models/bcn2.jpg');
-s2 = im(120:220,65:165,:);
-mostra2 = equalize(s2);
-im = imread('models/bcn3.jpg');
-s3 = im(300:400,80:180,:);
-mostra3 = equalize(s3);
-
-
-%Creem els histogrames de les mostres
-global models; %global modelBcn;
+global models;
 %a la variable models hi guardarem els 3 histogrames model de cada equip
-models = zeros(1, 3, 96);
-modelBcn = zeros(3, 96);
-modelBcn(1, :)= histograma(mostra1,bins);
-modelBcn(2, :) = histograma(mostra2,bins);
-modelBcn(3, :) = histograma(mostra3,bins);
-models(1, :, :) = modelBcn;
-
-figure(),subplot(1,3,1), imshow(mostra1), title('bcn model 1');
-subplot(1,3,2), imshow(mostra2), title('bcn model 2');
-subplot(1,3,3), imshow(mostra3), title('bcn model 3');
-% TO DO: Carregar models d'altres equips
-
+models = zeros(num_teams, 3, 96);
+loadHists();
 %% Etapa 3. Comparacio dels histogrames de cada equip
 % LLegim totes les imatges de cada equip i calculem el resultat
 % Per cada foto ens sera retornat un nombre del 1 al 7 indicant l'equip
 % amb mes presencia a la foto
 bcn = readImgs('barcelona', th);
-%madrid = readImgs('madrid', H1, H2, H3, th);
-%acmilan = readImgs('acmilan', H1, H2, H3, th);
-%chelsea = readImgs('chelsea', H1, H2, H3, th);
-%juventus = readImgs('juventus', H1, H2, H3, th);
-%liverpool = readImgs('liverpool', H1, H2, H3, th);
-%psv = readImgs('psv', H1, H2, H3, th);
+%madrid = readImgs('madrid', th);
+acmilan = readImgs('acmilan', th);
+%chelsea = readImgs('chelsea', th);
+%juventus = readImgs('juventus', th);
+%liverpool = readImgs('liverpool', th);
+%psv = readImgs('psv', th);
 
 falsNeg = sum(bcn<=th2)/37;
 disp('% falsos negatius: ');
@@ -58,7 +35,7 @@ disp(falsPos);
 %% Distribucio dels resultats
 c = categorical({'barcelona','madrid','milan', 'chelsea', 'juventus', 'liverpool', 'psv'});
 %figure(), bar(c, [bcn;madrid;acmilan;chelsea;juventus;liverpool;psv], 'BarWidth', 1),  title('RGB 32 bins');
-figure(), bar(bcn, 'BarWidth', 1),  title('RGB 32 bins');
+figure(), bar([bcn, acmilan], 'BarWidth', 1),  title('RGB 32 bins');
 
 
 %% Funcions auxiliars
@@ -137,4 +114,40 @@ function D=compareHists(H1, H2)
     Dgreens = pdist2(H1(bins:2*bins-1),H2(bins:2*bins-1));
     Dblues = pdist2(H1(2*bins:L),H2(2*bins:L));
     D = (Dblues+Dreds+Dgreens)/3;
+end
+
+function loadHists()
+% TO DO: Falten models
+global models; global bins;
+    %1 Imatges i histogrames BCN
+    im = imread('models/bcn1.jpg');
+    s = im(170:270,60:160,:);
+    mostra1 = equalize(s);
+    im = imread('models/bcn2.jpg');
+    s2 = im(120:220,65:165,:);
+    mostra2 = equalize(s2);
+    im = imread('models/bcn3.jpg');
+    s3 = im(300:400,80:180,:);
+    mostra3 = equalize(s3);
+    modelBcn = zeros(3, 96);
+    modelBcn(1, :)= histograma(mostra1,bins);
+    modelBcn(2, :) = histograma(mostra2,bins);
+    modelBcn(3, :) = histograma(mostra3,bins);
+    models(1, :, :) = modelBcn;
+    
+    %2 Imatges i histogrames AcMilan
+    modelAcm = zeros(3, 96);
+    im = imread('models/acm1.jpg');
+    s = im(110:210,80:180,:);
+    mostra1 = equalize(s);
+    modelAcm(1, :)= histograma(mostra1,bins);
+    im = imread('models/acm1.jpg');
+    s2 = im(110:210,80:180,:);
+    mostra2 = equalize(s2);
+    modelAcm(2, :) = histograma(mostra2,bins);
+    im = imread('models/acm1.jpg');
+    s3 = im(110:210,80:180,:);
+    mostra3 = equalize(s3);
+    modelAcm(3, :) = histograma(mostra3,bins);
+    models(2, :, :) = modelAcm;
 end
