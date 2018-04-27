@@ -3,7 +3,7 @@
 %per optimitzar els resultats
 global bins;
 global num_teams; global num_hists;
-num_teams = 7; %TO DO: idealment 7...
+num_teams = 7;
 num_hists = 3;
 bins = 32;
 th = 0.2;
@@ -29,7 +29,6 @@ else
     results = readImgs(team);
     %Fem un grafic per veure quin valor li ha sigut assignat a cada foto
     %Segons el valor de la barra sabem a quin equip pertany
-    %1: bcn, 2:acmilan, ... TO DO: fer que aixo es vegi maco? nose com
     figure(), bar(results, 'BarWidth', 1),  title(strcat('resultats_ ',team));
 end
 %% Funcions auxiliars
@@ -135,7 +134,6 @@ function D=compareHists(H1, H2)
 end
 
 function loadHists()
-% TO DO: Falten models
 global models; global bins;
     %1 Imatges i histogrames BCN
     modelBcn = zeros(3, 96);
