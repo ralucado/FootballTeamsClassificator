@@ -3,7 +3,7 @@
 %per optimitzar els resultats
 global bins;
 global num_teams; global num_hists;
-num_teams = 4; %TO DO: idealment 7...
+num_teams = 7; %TO DO: idealment 7...
 num_hists = 3;
 bins = 32;
 th = 0.2;
@@ -159,12 +159,12 @@ global models; global bins;
     s = im(110:210,80:180,:);
     mostra1 = equalize(s);
     modelAcm(1, :)= histograma(mostra1,bins);
-    im = imread('models/acm1.jpg');
-    s2 = im(110:210,80:180,:);
+    im = imread('models/acm2.jpg');
+    s2 = im(150:250, 180:280, :);
     mostra2 = equalize(s2);
     modelAcm(2, :) = histograma(mostra2,bins);
-    im = imread('models/acm1.jpg');
-    s3 = im(110:210,80:180,:);
+    im = imread('models/acm3.jpg');
+    s3 = im(200:300, 229:329, :);
     mostra3 = equalize(s3);
     modelAcm(3, :) = histograma(mostra3,bins);
     models(2, :, :) = modelAcm;
@@ -172,15 +172,15 @@ global models; global bins;
     %3 Imatges i histogrames Chelsea
     modelChe = zeros(3, 96);
     im = imread('models/che1.jpg');
-    s = im(125:170, 200:250, :);
+    s = im(90:190, 50:150, :);
     mostra1 = equalize(s);
     modelChe(1, :)= histograma(mostra1,bins);
     im = imread('models/che2.jpg');
-    s2 = im(60:120,115:170,:);
+    s2 = im(115:215, 100:200, :);
     mostra2 = equalize(s2);
     modelChe(2, :) = histograma(mostra2,bins);
     im = imread('models/che3.jpg');
-    s3 = im(75:160,60:140,:);
+    s3 = im(70:160, 40:110, :);
     mostra3 = equalize(s3);
     modelChe(3, :) = histograma(mostra3,bins);
     models(3, :, :) = modelChe;
@@ -191,13 +191,61 @@ global models; global bins;
     s = im(120:220,150:250,:);
     mostra1 = equalize(s);
     modelRM(1, :)= histograma(mostra1,bins);
-    im = imread('models/rm1.jpg');
-    s2 = im(120:220,150:250,:);
+    im = imread('models/rm2.jpg');
+    s2 = im(090:190, 120:220, :);
     mostra2 = equalize(s2);
     modelRM(2, :) = histograma(mostra2,bins);
-    im = imread('models/rm1.jpg');
-    s3 = im(120:220,150:250,:);
+    im = imread('models/rm3.jpg');
+    s3 = im(090:190, 150:220, :);
     mostra3 = equalize(s3);
     modelRM(3, :) = histograma(mostra3,bins);
-    models(3, :, :) = modelRM;
+    models(4, :, :) = modelRM;
+    
+    %5 Imatges i histogrames de la Juventus
+    modelJuv = zeros(3, 96);
+    im = imread('models/juv1.jpg');
+    s = im(55:120, 135:200, :);
+    mostra1 = equalize(s);
+    modelJuv(1, :)= histograma(mostra1,bins);
+    im = imread('models/juv2.jpg');
+    s2 = im(70:150, 75:135, :);
+    mostra2 = equalize(s2);
+    modelJuv(2, :) = histograma(mostra2,bins);
+    im = imread('models/juv3.jpg');
+    s3 = im(127:242, 15:130, :);
+    mostra3 = equalize(s3);
+    modelJuv(3, :) = histograma(mostra3,bins);
+    models(5, :, :) = modelJuv;
+    
+    %6 Imatges i histogrames del Liverpool
+    modelLiv = zeros(3, 96);
+    im = imread('models/liv1.jpg');
+    s = im(70:140, 276:324, :);
+    mostra1 = equalize(s);
+    modelLiv(1, :)= histograma(mostra1,bins);
+    im = imread('models/liv2.jpg');
+    s2 = im(166:256, 50:150, :);
+    mostra2 = equalize(s2);
+    modelLiv(2, :) = histograma(mostra2,bins);
+    im = imread('models/liv3.jpg');
+    s3 = im(43:100, 265:295, :);
+    mostra3 = equalize(s3);
+    modelLiv(3, :) = histograma(mostra3,bins);
+    models(6, :, :) = modelLiv;
+    
+     %7 Imatges i histogrames del Psv
+    modelPsv = zeros(3, 96);
+    im = imread('models/psv1.jpg');
+    s = im(50:107, 110:165, :);
+    mostra1 = equalize(s);
+    modelPsv(1, :)= histograma(mostra1,bins);
+    im = imread('models/psv2.jpg');
+    s2 = im(85:145, 245:285, :);
+    mostra2 = equalize(s2);
+    modelPsv(2, :) = histograma(mostra2,bins);
+    im = imread('models/psv3.jpg');
+    s3 = im(90:170, 90:150, :);
+    mostra3 = equalize(s3);
+    modelPsv(3, :) = histograma(mostra3,bins);
+    models(7, :, :) = modelPsv;
 end
