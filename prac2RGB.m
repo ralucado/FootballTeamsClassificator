@@ -187,15 +187,15 @@ global models; global bins;
     %3 Imatges i histogrames Chelsea
     modelChe = zeros(3, 96);
     im = imread('models/che1.jpg');
-    s = im(80:180,20:120,:);
+    s = im(125:170, 200:250, :);
     mostra1 = equalize(s);
     modelChe(1, :)= histograma(mostra1,bins);
     im = imread('models/che2.jpg');
-    s2 = im(130:230,70:170,:);
+    s2 = im(60:120,115:170,:);
     mostra2 = equalize(s2);
     modelChe(2, :) = histograma(mostra2,bins);
     im = imread('models/che3.jpg');
-    s3 = im(60:160,40:140,:);
+    s3 = im(75:160,60:140,:);
     mostra3 = equalize(s3);
     modelChe(3, :) = histograma(mostra3,bins);
     models(3, :, :) = modelChe;
