@@ -3,7 +3,7 @@
 %per optimitzar els resultats
 global bins;
 global num_teams; global num_hists;
-num_teams = 2; %TO DO: idealment 7...
+num_teams = 3; %TO DO: idealment 7...
 num_hists = 3;
 bins = 32;
 th = 0.2;
@@ -20,7 +20,7 @@ loadHists();
 bcn = readImgs('barcelona', th);
 %madrid = readImgs('madrid', th);
 acmilan = readImgs('acmilan', th);
-%chelsea = readImgs('chelsea', th);
+chelsea = readImgs('chelsea', th);
 %juventus = readImgs('juventus', th);
 %liverpool = readImgs('liverpool', th);
 %psv = readImgs('psv', th);
@@ -28,7 +28,7 @@ acmilan = readImgs('acmilan', th);
 falsNeg = sum(bcn<=th2)/37;
 disp('% falsos negatius: ');
 disp(falsNeg);
-falsPos = sum([madrid,acmilan,chelsea,juventus,liverpool,psv]>th2)/(6*37);
+falsPos = sum([acmilan,chelsea]>th2)/(2*37);
 disp('% falsos positius: ');
 disp(falsPos);
 
@@ -38,7 +38,7 @@ disp(falsPos);
 %Fem un grafic per veure quin valor li ha sigut assignat a cada foto
 %Segons el valor de la barra sabem a quin equip pertany
 %1: bcn, 2:acmilan, ... TO DO: fer que aixo es vegi maco? nose com
-figure(), bar([bcn, acmilan], 'BarWidth', 1),  title('RGB 32 bins');
+figure(), bar([bcn, acmilan, chelsea], 'BarWidth', 1),  title('RGB 32 bins');
 
 
 %% Funcions auxiliars
@@ -183,4 +183,21 @@ global models; global bins;
     mostra3 = equalize(s3);
     modelAcm(3, :) = histograma(mostra3,bins);
     models(2, :, :) = modelAcm;
+    
+    %3 Imatges i histogrames Chelsea
+    modelChe = zeros(3, 96);
+    im = imread('models/che1.jpg');
+    s = im(80:180,20:120,:);
+    mostra1 = equalize(s);
+    modelChe(1, :)= histograma(mostra1,bins);
+    im = imread('models/che2.jpg');
+    s2 = im(130:230,70:170,:);
+    mostra2 = equalize(s2);
+    modelChe(2, :) = histograma(mostra2,bins);
+    im = imread('models/che3.jpg');
+    s3 = im(60:160,40:140,:);
+    mostra3 = equalize(s3);
+    modelChe(3, :) = histograma(mostra3,bins);
+    models(3, :, :) = modelChe;
+    
 end
