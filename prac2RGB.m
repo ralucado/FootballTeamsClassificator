@@ -3,7 +3,7 @@
 %per optimitzar els resultats
 global bins;
 global num_teams; global num_hists;
-num_teams = 3; %TO DO: idealment 7...
+num_teams = 4; %TO DO: idealment 7...
 num_hists = 3;
 bins = 32;
 th = 0.2;
@@ -13,13 +13,13 @@ global models;
 %a la variable models hi guardarem els 3 histogrames model de cada equip
 models = zeros(num_teams, 3, 96);
 loadHists();
-%% Etapa 3. Comparacio dels histogrames de cada equip
-team = '';
+%% Etapa 3 i 4. Comparacio dels histogrames de cada equip i distribucio de resultats
 mode =  input('\nVols tractar una sola imatge o totes les de un equip?:\n1 - Sola\n2 - Equip\n');
 if(mode == 1)
     team = input('\nIndica lequip de la imatge a tractar:\nbarcelona\nacmilan\nmadrid\n', 's');
     num = input('\nIndica el numero de la imatge a tractar:\n01 .. 37\n', 's');
     res = readImg(team, num);
+    disp('La imatge pertany al equip: ');
     disp(res);
 else
 % LLegim totes les imatges de cada equip i calculem el resultat
@@ -27,16 +27,11 @@ else
 % amb mes presencia a la foto
     team = input('\nIndica lequip a tractar:\nbarcelona\nacmilan\nmadrid\n', 's');
     results = readImgs(team);
+    %Fem un grafic per veure quin valor li ha sigut assignat a cada foto
+    %Segons el valor de la barra sabem a quin equip pertany
+    %1: bcn, 2:acmilan, ... TO DO: fer que aixo es vegi maco? nose com
+    figure(), bar(results, 'BarWidth', 1),  title(strcat('resultats_ ',team));
 end
-%% Etapa 4: Distribucio dels resultats
-%c = categorical({'barcelona','madrid','milan', 'chelsea', 'juventus', 'liverpool', 'psv'});
-%figure(), bar(c, [bcn;madrid;acmilan;chelsea;juventus;liverpool;psv], 'BarWidth', 1),  title('RGB 32 bins');
-%Fem un grafic per veure quin valor li ha sigut assignat a cada foto
-%Segons el valor de la barra sabem a quin equip pertany
-%1: bcn, 2:acmilan, ... TO DO: fer que aixo es vegi maco? nose com
-figure(), bar(results, 'BarWidth', 1),  title(strcat('resultats_ ',team));
-
-
 %% Funcions auxiliars
 %llegeix una sola imatge i en calcula l'equip al que pertany
 function res=readImg(team, num)
@@ -97,7 +92,6 @@ function index=compareImg(im)
             end
         end
         %Normalitzem d segons el nombre de subimatges que s'han contrastat
-        disp('d: '); disp(d);
         d = d/total;
         if(d < minD)
             %Guardem l'index de l'equip que ha coincidit millor amb la
@@ -174,11 +168,27 @@ global models; global bins;
     mostra3 = equalize(s3);
     modelAcm(3, :) = histograma(mostra3,bins);
     models(2, :, :) = modelAcm;
+
+    %3 Imatges i histogrames Chelsea
+    modelChe = zeros(3, 96);
+    im = imread('models/che1.jpg');
+    s = im(80:180,20:120,:);
+    mostra1 = equalize(s);
+    modelChe(1, :)= histograma(mostra1,bins);
+    im = imread('models/che2.jpg');
+    s2 = im(130:230,70:170,:);
+    mostra2 = equalize(s2);
+    modelChe(2, :) = histograma(mostra2,bins);
+    im = imread('models/che3.jpg');
+    s3 = im(60:160,40:140,:);
+    mostra3 = equalize(s3);
+    modelChe(3, :) = histograma(mostra3,bins);
+    models(3, :, :) = modelChe;
     
     %4 Imatges i histogrames del Madrid
     modelRM = zeros(3, 96);
     im = imread('models/rm1.jpg');
-    s = im(120:220,150:250,:);;
+    s = im(120:220,150:250,:);
     mostra1 = equalize(s);
     modelRM(1, :)= histograma(mostra1,bins);
     im = imread('models/rm1.jpg');
